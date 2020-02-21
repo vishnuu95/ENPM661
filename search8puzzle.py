@@ -69,4 +69,74 @@ def checkDuplicate(currNode):
     else:    
         return False                    
 
+def addPossibleChildren(currNode):
+    possible = { # up - 1, right - 2, down - 3, left - 4.
+        0 : [2, 3],          #(1,1)
+        1 : [1, 2, 3],        #(2,1)
+        2 : [1, 2],         #(3,1)
+        3 : [2, 3, 4],        #(1,2)
+        4 : [1, 2, 3, 4],    #(2,2)
+        5 : [1, 2, 4],      #(3,2)
+        6 : [3, 4],         #(1,3)
+        7 : [1, 3, 4],      #(2,3)
+        8 : [1, 4]          #(3,3)
+    }
+    children = []
+    #print ("possible: " + str(len(possible.get(currNode.blank))))
+    for i in possible.get(currNode.blank):
+        if (i == 1):
+            upGrid = currNode.grid[:]                   # store a copy of the grid to be updated and changed 
+            blank = currNode.blank                      # store the blank location of current grid in a seperate variable
+            temp = upGrid[currNode.blank - 1]           # store the element above blank in temp
+            upGrid[currNode.blank - 1] = 0              # change the up element to 0 
+            upGrid[currNode.blank] = temp               # change the blank element with the up element
+            newNode = node(currNode, currNode.index, upGrid)
+            if (not checkDuplicate(newNode)):
+                if(solvable(newNode)):
+                    children.append(newNode)
 
+        if (i == 2):
+            rightGrid = currNode.grid[:]                # store a copy of the grid to be updated and changed 
+            blank = currNode.blank                      # store the blank location in a seperate variable
+            temp = rightGrid[currNode.blank + 3]        # store the element above blank in temp
+            rightGrid[currNode.blank + 3] = 0           # change the right element to 0
+            rightGrid[currNode.blank] = temp            # change the blank element with the right element
+            newNode = node(currNode, currNode.index, rightGrid)
+            if (not checkDuplicate(newNode)):
+                if(solvable(newNode)):
+                    children.append(newNode)
+
+        if (i == 3):
+            downGrid = currNode.grid[:]                 # store a copy of the grid to be updated and changed 
+            blank = currNode.blank                      # store the blank location in a seperate variable
+            temp = downGrid[currNode.blank + 1]         # store the element above blank in temp
+            downGrid[currNode.blank + 1] = 0            # change the down element to 0
+            downGrid[currNode.blank] = temp             # change the blank element with the down element
+            newNode = node(currNode, currNode.index, downGrid)
+            if (not checkDuplicate(newNode)):
+                if(solvable(newNode)):
+                    children.append(newNode)
+
+        if (i == 4):
+            leftGrid = currNode.grid[:]                 # store a copy of the grid to be updated and changed          
+            blank = currNode.blank                      # store the blank location in a seperate variable
+            temp = leftGrid[currNode.blank - 3]         # store the element above blank in temp
+            leftGrid[currNode.blank - 3] = 0            # change the left element to 0 
+            leftGrid[currNode.blank] = temp             # change the blank element with the left element   
+            newNode = node(currNode, currNode.index, leftGrid)
+            if (not checkDuplicate(newNode)):
+                if(solvable(newNode)):
+                    children.append(newNode)
+    #print("children: " + str(len(children)))
+    global register            
+    register.update(children)
+    #print(register)
+    return children
+
+def solvable(currNode):
+    row_grid = [currNode.grid[0],currNode.grid[3],currNode.grid[6],currNode.grid[1],currNode.grid[4], currNode.grid[7],currNode.grid[2],currNode.grid[5],currNode.grid[8]]
+    inv = 0
+    for i in range(8):
+        for j in range(i+1,9):
+            if(row_grid[i] and row_grid[j] and (row_grid[i] > row_grid[j])):
+                inv+=1

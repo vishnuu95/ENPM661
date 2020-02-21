@@ -154,3 +154,16 @@ def solvable(currNode):
         return True
     else:
         return False    
+def solve(Queue):
+    while(1):
+        if(not len(Queue)):
+            print ("No solution possible. Exiting code.")
+            return
+        if(isGoal(Queue[0])):
+            states,path = findPath(Queue[0])
+            break
+        else:
+            Queue = Queue + addPossibleChildren(Queue[0])
+            del Queue[0]
+        
+    return states          

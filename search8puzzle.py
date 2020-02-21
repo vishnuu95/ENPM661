@@ -58,6 +58,15 @@ def isGoal(currNode):
             return 0    
     else:
         return 0        
+        
+
+def findPath(currNode):
+    global states
+    while(currNode != None):
+        states.insert(0, currNode.grid)
+        path.insert(0,[currNode.index, currNode.parent_index])
+        currNode = currNode.parent
+    return states,path    
     
 def checkDuplicate(currNode):
     global register, counter
@@ -140,3 +149,8 @@ def solvable(currNode):
         for j in range(i+1,9):
             if(row_grid[i] and row_grid[j] and (row_grid[i] > row_grid[j])):
                 inv+=1
+
+    if(inv%2 == 0):
+        return True
+    else:
+        return False    

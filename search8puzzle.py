@@ -33,5 +33,26 @@ class node:
         #
         #print(self.blank)
     
+    def setGrid(self, grid):
+        self.grid = grid
+        return 
+
+    @staticmethod
+    def findBlank(self):
+        index = None
+        for i in range(0,9):
+            #print(self.grid[i])
+            if self.grid[i]==0:
+                index = i
+        #print(index)        
+        return index        
+def isGoal(currNode):
+    if(currNode.blank == 8):
+        if(currNode.grid == list([1, 4, 7, 2, 5, 8, 3, 6, 0])):
+            return 1
+        else:
+            return 0    
+    else:
+        return 0        
 
 

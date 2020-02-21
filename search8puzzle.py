@@ -154,6 +154,28 @@ def solvable(currNode):
         return True
     else:
         return False    
+
+def write_states(states):
+    f = open("nodePath.txt","w")
+    for i in states:
+        for j in range(len(i)):  
+            f.write(str(i[j]) + " ")
+        f.write("\n")    
+    f.close()
+
+def write_nodes(register):
+    f = open("Nodes.txt","w")
+    for i in register:
+        for j in range(len(i.grid)):
+            f.write(str(i.grid[j]) + ' ')
+        f.write("\n")    
+    f.close()
+
+def write_path(path):
+    f = open("NodesInfo.txt","w")
+    for i in range(len(path)):
+        f.write(str(path.pop())+"\n")
+    f.close()    
 def solve(Queue):
     while(1):
         if(not len(Queue)):

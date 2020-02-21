@@ -16,6 +16,10 @@ import os
 #   Methods:
 #       setGrid - sets the Grid of a node.
 #       findBlank - finds the blank space of a grid. 
+global counter, states, index_ctr, path
+states = []
+path = []
+counter = 1
 
 class node:
     def __init__(self, parent, parent_index, grid):
@@ -54,5 +58,15 @@ def isGoal(currNode):
             return 0    
     else:
         return 0        
+    
+def checkDuplicate(currNode):
+    global register, counter
+    counter += 1
+    #print (counter)
+    #print (register)
+    if(currNode in register):
+        return True
+    else:    
+        return False                    
 
 

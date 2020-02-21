@@ -189,3 +189,32 @@ def solve(Queue):
             del Queue[0]
         
     return states          
+# While currnode ! = None
+#Check if curr is goal : if yes , add currnode to stack gen function and return, else iterate all possible child 
+# Possible child : Check based on location, Non previously present node
+# Assign self with possible childs based on action. 
+# If iterated through all childs return 
+      
+if __name__=="__main__":
+    initNode = input("Enter the grid in a coloumn wise format: " )
+    initNode = [int(i) for i in initNode]
+    print ("You entered: " + str(initNode))
+    print ("Searching.... ")   
+    index_ctr = 0
+    curr = node(None,0,initNode)
+    register = {curr} 
+    Queue = [curr]
+    if(isGoal(Queue[0])):
+        states.insert(0,Queue[0].grid)
+        states.insert(0,Queue[0].grid)
+        path.append([0,0])
+    elif(not solvable(Queue[0])):
+        states.insert(0,Queue[0].grid)
+        path.append([0,0])
+    else:        
+        states = solve(Queue)
+
+    print("Program Ended.. ")
+    write_states(states)            # writes curr to goal state
+    write_nodes(register)           # writes all nodes to visited nodes to one file
+    write_path(path)                # writes curr node index and parent node index

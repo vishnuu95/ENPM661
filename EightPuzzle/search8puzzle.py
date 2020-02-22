@@ -73,7 +73,7 @@ def findPath(currNode):
 def checkDuplicate(currNode):
     global register, counter
     counter += 1
-    print (counter)
+    #print (counter)
     #print (register) 
     for i in register:
         if(i.blank == currNode.blank):

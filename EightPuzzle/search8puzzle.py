@@ -7,6 +7,7 @@
 
 import sys
 import os
+from queue import  Queue
 
 # Node class - kind of doubly linked list
 #   Variables:
@@ -49,7 +50,8 @@ class node:
             if self.grid[i]==0:
                 index = i
         #print(index)        
-        return index        
+        return index  
+
 def isGoal(currNode):
     if(currNode.blank == 8):
         if(currNode.grid == list([1, 4, 7, 2, 5, 8, 3, 6, 0])):
@@ -71,12 +73,14 @@ def findPath(currNode):
 def checkDuplicate(currNode):
     global register, counter
     counter += 1
-    #print (counter)
-    #print (register)
-    if(currNode in register):
-        return True
-    else:    
-        return False                    
+    print (counter)
+    #print (register) 
+    for i in register:
+        if(i.blank == currNode.blank):
+            if(i.grid == currNode.grid):
+                #print("True")     
+                return True
+    return False 
 
 def addPossibleChildren(currNode):
     possible = { # up - 1, right - 2, down - 3, left - 4.
@@ -94,52 +98,63 @@ def addPossibleChildren(currNode):
     #print ("possible: " + str(len(possible.get(currNode.blank))))
     for i in possible.get(currNode.blank):
         if (i == 1):
+            #print("1")
             upGrid = currNode.grid[:]                   # store a copy of the grid to be updated and changed 
             blank = currNode.blank                      # store the blank location of current grid in a seperate variable
             temp = upGrid[currNode.blank - 1]           # store the element above blank in temp
             upGrid[currNode.blank - 1] = 0              # change the up element to 0 
             upGrid[currNode.blank] = temp               # change the blank element with the up element
             newNode = node(currNode, currNode.index, upGrid)
+            #print(newNode.grid)
             if (not checkDuplicate(newNode)):
                 if(solvable(newNode)):
                     children.append(newNode)
+                    
 
         if (i == 2):
+            #print ("2")
             rightGrid = currNode.grid[:]                # store a copy of the grid to be updated and changed 
             blank = currNode.blank                      # store the blank location in a seperate variable
             temp = rightGrid[currNode.blank + 3]        # store the element above blank in temp
             rightGrid[currNode.blank + 3] = 0           # change the right element to 0
             rightGrid[currNode.blank] = temp            # change the blank element with the right element
             newNode = node(currNode, currNode.index, rightGrid)
+            #print(newNode.grid)
             if (not checkDuplicate(newNode)):
                 if(solvable(newNode)):
                     children.append(newNode)
-
+                    
         if (i == 3):
+            #print ("3")
             downGrid = currNode.grid[:]                 # store a copy of the grid to be updated and changed 
             blank = currNode.blank                      # store the blank location in a seperate variable
             temp = downGrid[currNode.blank + 1]         # store the element above blank in temp
             downGrid[currNode.blank + 1] = 0            # change the down element to 0
             downGrid[currNode.blank] = temp             # change the blank element with the down element
             newNode = node(currNode, currNode.index, downGrid)
+            #print(newNode.grid)
             if (not checkDuplicate(newNode)):
                 if(solvable(newNode)):
                     children.append(newNode)
+                    
 
         if (i == 4):
+            #print ("4")
             leftGrid = currNode.grid[:]                 # store a copy of the grid to be updated and changed          
             blank = currNode.blank                      # store the blank location in a seperate variable
             temp = leftGrid[currNode.blank - 3]         # store the element above blank in temp
             leftGrid[currNode.blank - 3] = 0            # change the left element to 0 
             leftGrid[currNode.blank] = temp             # change the blank element with the left element   
             newNode = node(currNode, currNode.index, leftGrid)
+            #print(newNode.grid)
             if (not checkDuplicate(newNode)):
                 if(solvable(newNode)):
                     children.append(newNode)
+                    
     #print("children: " + str(len(children)))
-    global register            
-    register.update(children)
-    #print(register)
+    global register           
+    register = register + children
+    #exit(-1)
     return children
 
 def solvable(currNode):
@@ -153,6 +168,7 @@ def solvable(currNode):
     if(inv%2 == 0):
         return True
     else:
+        print("False")
         return False    
 
 def write_states(states):
@@ -176,17 +192,22 @@ def write_path(path):
     for i in range(len(path)):
         f.write(str(path.pop())+"\n")
     f.close()    
-def solve(Queue):
+
+def solve(que):
     while(1):
-        if(not len(Queue)):
+        if(not que.qsize()):
             print ("No solution possible. Exiting code.")
             return
-        if(isGoal(Queue[0])):
-            states,path = findPath(Queue[0])
+        a = que.get()    
+        if(isGoal(a)):
+            states, path = findPath(a)
             break
         else:
-            Queue = Queue + addPossibleChildren(Queue[0])
-            del Queue[0]
+            children = addPossibleChildren(a)
+            for i in children:
+                que.put(i)
+
+            
         
     return states          
 # While currnode ! = None
@@ -202,17 +223,18 @@ if __name__=="__main__":
     print ("Searching.... ")   
     index_ctr = 0
     curr = node(None,0,initNode)
-    register = {curr} 
-    Queue = [curr]
-    if(isGoal(Queue[0])):
-        states.insert(0,Queue[0].grid)
-        states.insert(0,Queue[0].grid)
+    register = [curr] 
+    que = Queue()
+    que.put(curr)
+    if(isGoal(curr)):
+        states.insert(0,curr.grid)
+        states.insert(0,curr.grid)
         path.append([0,0])
-    elif(not solvable(Queue[0])):
-        states.insert(0,Queue[0].grid)
+    elif(not solvable(curr)):
+        states.insert(0,curr.grid)
         path.append([0,0])
     else:        
-        states = solve(Queue)
+        states = solve(que)
 
     print("Program Ended.. ")
     write_states(states)            # writes curr to goal state

@@ -9,6 +9,12 @@ Here, breadth first search technique is used to search for the solution.
 
 A sample solution image is shown is also present in the repository. 
 ![alt text](https://github.com/vishnuu95/ENPM661/blob/master/EightPuzzle/sample_sol.png)
+## Dependencies:
+1. Python 3
+2. queue (library)
+3. sys (library)
+4. os (library)
+5. Ubuntu
 
 ## To run:
 Python 3 is used to run the above code. 

@@ -8,7 +8,7 @@ Here, breadth first search technique is used to search for the solution.
 * The class has two methods  setGrid and findBlank which are used to set a node's grid and finding the blank of the node. 
 
 A sample solution image is shown is also present in the repository. 
-![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 1")
+![alt text](https://github.com/vishnuu95/ENPM661/blob/master/EightPuzzle/sample_sol.png)
 
 ## To run:
 Python 3 is used to run the above code. 
